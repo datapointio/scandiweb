@@ -342,8 +342,8 @@ resource "aws_alb_listener" "https" {
 	load_balancer_arn = "${aws_alb.scandiweb.arn}"
 	port = "443"
 	protocol = "HTTPS"
-    ssl_policy = "ELBSecurityPolicy-2016-08"
-    certificate_arn = "arn:aws:acm:us-east-2:162813680020:certificate/528b79e0-b461-45ac-9fb8-69c98e1298e1"
+	ssl_policy = "ELBSecurityPolicy-2016-08"
+	certificate_arn = "arn:aws:acm:us-east-2:162813680020:certificate/528b79e0-b461-45ac-9fb8-69c98e1298e1"
 
 	default_action {
 		target_group_arn = "${aws_alb_target_group.varnish.arn}"
