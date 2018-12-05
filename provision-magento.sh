@@ -28,6 +28,8 @@ server {
     listen 80;
     listen [::]:80;
 
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
     set \$MAGE_ROOT /var/www/magento2;
     set \$MAGE_MODE production;
     include /var/www/magento2/nginx.conf.sample;
