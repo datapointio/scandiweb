@@ -9,7 +9,7 @@ provider "aws" {
 variable "aws_region" {
 
     description = "Region for the VPC"
-    default = "us-east-2"
+    default = "eu-central-1"
 
 }
 
@@ -133,7 +133,7 @@ resource "aws_route_table_association" "scandiweb02" {
 
 resource "aws_instance" "scandiweb_magento" {
 
-    ami = "ami-0f65671a86f061fcd" 
+    ami = "ami-0bdf93799014acdc4" 
     instance_type = "t2.micro"
     key_name = "scandiweb"
     subnet_id = "${aws_subnet.scandiweb01.id}"
@@ -186,6 +186,7 @@ resource "aws_security_group" "magento" {
         cidr_blocks = ["${var.vpc_cidr}"]
 
     }
+
     egress {
 
         from_port = 0
@@ -199,7 +200,7 @@ resource "aws_security_group" "magento" {
 
 resource "aws_instance" "scandiweb_varnish" {
 
-    ami = "ami-0f65671a86f061fcd" 
+    ami = "ami-0bdf93799014acdc4"
     instance_type = "t2.micro"
     subnet_id = "${aws_subnet.scandiweb01.id}"
     key_name = "scandiweb"
@@ -325,15 +326,15 @@ resource "aws_alb_listener" "http" {
 	port = "80"
 	protocol = "HTTP"
 
-	default_action {
-		type = "redirect"
+    default_action {
+        type = "redirect"
 
-		redirect {
-		    port = "443"
-		    protocol = "HTTPS"
-		    status_code = "HTTP_301"
-		}
-	}
+        redirect {
+            port = "443"
+            protocol = "HTTPS"
+            status_code = "HTTP_301"
+        }
+    }
 
 }
 
@@ -342,8 +343,8 @@ resource "aws_alb_listener" "https" {
 	load_balancer_arn = "${aws_alb.scandiweb.arn}"
 	port = "443"
 	protocol = "HTTPS"
-	ssl_policy = "ELBSecurityPolicy-2016-08"
-	certificate_arn = "arn:aws:acm:us-east-2:162813680020:certificate/528b79e0-b461-45ac-9fb8-69c98e1298e1"
+    ssl_policy = "ELBSecurityPolicy-2016-08"
+    certificate_arn = "arn:aws:acm:eu-central-1:162813680020:certificate/f559cc88-54fe-434d-ab22-3df1a18856f7"
 
 	default_action {
 		target_group_arn = "${aws_alb_target_group.varnish.arn}"
@@ -401,4 +402,3 @@ resource "aws_alb_target_group_attachment" "magento" {
     port = 80
 
 }
-
